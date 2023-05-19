@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menampilkan Data dari REST API</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<script>
+    function validateForm() {
+        var Date = document.forms["myForm"]["Date"].value;
+        var LocalName = document.forms["myForm"]["LocalName"].value;
+        var Name = document.forms["myForm"]["Name"].value;
+        var CountryCode = document.forms["myForm"]["CountryCode"].value;
+        var Fixed = document.forms["myForm"]["Fixed"].value;
+        var Global = document.forms["myForm"]["Global"].value;
+        var Countries = document.forms["myForm"]["Countries"].value;
+        var LaunchedYear = document.forms["myForm"]["LaunchedYear"].value;
+        var Type = document.forms["myForm"]["Type"].value;
+
+        if (Date === "" || LocalName === "" || Name === "" || CountryCode === "" || Fixed === "" || Global === "" || Countries === "" || LaunchedYear === "" || Type === "") {
+            alert("Please fill in all fields.");
+            return false;
+        }
+    }
+</script>
+
+<body>
+<div class="container">
+    <h1>Form Data</h1>
+
+    <form name="myForm" onsubmit="return validateForm()">
+        <div class="form-group">
+            <label for="Date">Date:</label>
+            <input type="date" id="Date" name="Date" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="LocalName">LocalName:</label>
+            <input type="text" id="LocalName" name="LocalName" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="Name">Name:</label>
+            <input type="text" id="Name" name="Name" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="CountryCode">CountryCode:</label>
+            <input type="text" id="CountryCode" name="CountryCode" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="Fixed">Fixed:</label>
+            <input type="text" id="Fixed" name="Fixed" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="Global">Global:</label>
+            <input type="text" id="Global" name="Global" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="Countries">Countries:</label>
+            <input type="text" id="Countries" name="Countries" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="LaunchedYear">LaunchedYear:</label>
+            <input type="text" id="LaunchedYear" name="LaunchedYear" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="Type">Type:</label>
+            <input type="text" id="Type" name="Type" class="form-control">
+        </div>
+
+        <br>
+
+        <input type="submit" value="Submit" class="btn btn-primary">
+    </form>
+</div>
+
+<div class="container mt-5">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Date</th>
+                <th>LocalName</th>
+                <th>Name</th>
+                <th>CountryCode</th>
+                <th>Fixed</th>
+                <th>Global</th>
+                <th>Countries</th>
+                <th>LaunchedYear</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody id="data-table-body"></tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: 'https://date.nager.at/api/v2/publicholidays/2020/US',
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                var data = response;  // Respons JSON
+
+                // Iterasi data untuk membuat baris tabel
+                for (var i = 0; i < data.length; i++) {
+                    var row = `<tr>
+                        <td>${data[i].date}</td>
+                        <td>${data[i].localName}</td>
+                        <td>${data[i].name}</td>
+                        <td>${data[i].countryCode}</td>
+                        <td>${data[i].fixed}</td>
+                        <td>${data[i].global}</td>
+                        <td>${data[i].counties}</td>
+                        <td>${data[i].launchYear}</td>
+                        <td>${data[i].type}</td>
+                    </tr>`;
+                    $('#data-table-body').append(row);
+                }
+            },
+            error: function() {
+                alert('Terjadi kesalahan dalam memuat data.');
+            }
+        });
+    });
+</script>
+</body>
+</html>
+
+
+
+
